@@ -4,11 +4,11 @@ import axios from "axios";
 const billStore = createSlice({
     name: "bill",
     initialState: {
-        billLisr: []
+        billList: []
     },
     reducers: {
         setBillList: (state, action) => {
-            state.billLisr = action.payload; //payload 就是传递的数据
+            state.billList = action.payload; //payload 就是传递的数据
         }
     }
 })

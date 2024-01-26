@@ -1,14 +1,33 @@
 import { NavBar, DatePicker } from 'antd-mobile'
-import React, { useState } from 'react'
+import React, { useMemo, useState } from 'react'
 import './index.scss'
 import classNames from 'classnames'
+import dayjs from 'dayjs'
+import { useSelector } from 'react-redux'
+import _ from 'lodash'
 
 const Month = () => {
+    const billList = useSelector((state) => state.bill.billList)
+
+    // 数据二次处理
+    const monthGroup = useMemo(() => {
+        return _.groupBy(billList, (item) => {
+            return dayjs(item.date).format('YYYY年 | MM月')
+        })
+    }, [billList])
+
+    console.log(monthGroup);
+    // 日期选择
     const [dateVisble, setDateVisible] = useState(false)
+    const [currentDate, setCurrentDate] = useState(() => {
+        return dayjs(new Date()).format('YYYY年 | MM月')
+    })
 
     const onDateChange = (date) => {
-        console.log('date', date);
+        const formatDate = dayjs(date).format('YYYY年 | MM月')
+        setCurrentDate(formatDate)
         setDateVisible(false)
+
     }
     return (
         <div className="monthlyBill">
@@ -20,7 +39,7 @@ const Month = () => {
                     {/* 时间切换区域 */}
                     <div className="date" onClick={() => setDateVisible(true)}>
                         <span className="text">
-                            2023 | 3月账单
+                            {currentDate + ''}账单
                         </span>
                         <span className={classNames('arrow', dateVisble && ' expand')}></span>
                     </div>
