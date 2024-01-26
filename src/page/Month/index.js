@@ -1,5 +1,5 @@
 import { NavBar, DatePicker } from 'antd-mobile'
-import React, { useMemo, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import './index.scss'
 import classNames from 'classnames'
 import dayjs from 'dayjs'
@@ -34,10 +34,19 @@ const Month = () => {
         }
     }, [currentMouteList])
 
+    useEffect(() => {
+        const nowDate = dayjs().format('YYYY年 | MM月')
+        if (monthGroup[nowDate]) {
+            setCurrentMouteList(monthGroup[nowDate])
+        }
+    }, [monthGroup])
+
     const onDateChange = (date) => {
         const formatDate = dayjs(date).format('YYYY年 | MM月')
         setCurrentDate(formatDate)
-        setCurrentMouteList(monthGroup[formatDate])
+        if (monthGroup[formatDate]) {
+            setCurrentMouteList(monthGroup[formatDate])
+        }
         setDateVisible(false)
 
     }
